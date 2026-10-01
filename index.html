@@ -1,36 +1,114 @@
-from pathlib import Path
-html = """<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nós Dois</title>
+
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fff4f6,#f4d9e8);color:#351d31}
-main{max-width:480px;margin:auto;min-height:100vh;padding:28px 22px;box-sizing:border-box;display:flex;align-items:center}
-.card{width:100%;background:#fffafc;border-radius:28px;padding:32px 24px;box-shadow:0 12px 35px #0002;text-align:center}
-.logo{font-size:58px;margin-bottom:8px}.heart{color:#d83b78}
-h1{font-size:38px;margin:0 0 10px}p{line-height:1.5;color:#694d61}
-button{width:100%;border:0;border-radius:16px;padding:16px;margin-top:12px;font-size:17px;font-weight:bold;background:#d83b78;color:white}
-.secondary{background:#fff;color:#d83b78;border:2px solid #d83b78}
-.info{margin-top:26px;font-size:14px}.info div{margin:10px 0}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffd6e7, #fff);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.principal {
+  width: 100%;
+  max-width: 480px;
+}
+
+.cartao {
+  background: #fff;
+  border-radius: 25px;
+  padding: 35px 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+.coracoes {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: #d83b78;
+  font-size: 38px;
+  margin: 0 0 12px;
+}
+
+.subtitulo {
+  color: #555;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  border-radius: 14px;
+  background: #d83b78;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+button.secundario {
+  background: white;
+  color: #d83b78;
+  border: 2px solid #d83b78;
+}
+
+.informacoes {
+  margin-top: 28px;
+  color: #777;
+  font-size: 15px;
+  line-height: 1.8;
+}
 </style>
 </head>
+
 <body>
-<main><section class="card">
-<div class="logo"><span class="heart">♥</span> ♥</div>
-<h1>Nós Dois</h1>
-<p><b>Será que você realmente conhece quem está ao seu lado?</b></p>
-<button onclick="alert('Vamos criar sua partida!')">Criar partida</button>
-<button class="secondary" onclick="alert('Digite o código recebido do seu parceiro.')">Entrar com código</button>
-<div class="info">
-<div>💬 <b>15 perguntas sobre vocês</b></div>
-<div>❤️ <b>Cada um responde sobre si mesmo</b></div>
-<div>✨ <b>Descubra o quanto vocês se conhecem</b></div>
-</div>
-</section></main>
+
+<main class="principal">
+  <section class="cartao">
+
+    <div class="coracoes">💕</div>
+
+    <h1>Nós Dois</h1>
+
+    <div class="subtitulo">
+      Será que você realmente conhece quem está ao seu lado?
+    </div>
+
+    <button onclick="alert('Em breve vocês poderão criar uma partida!')">
+      Criar partida
+    </button>
+
+    <button class="secundario" onclick="alert('Em breve vocês poderão entrar com um código!')">
+      Entrar com código
+    </button>
+
+    <div class="informacoes">
+      ❤️ 15 perguntas sobre vocês<br>
+      💕 Cada um responde sobre si mesmo<br>
+      💖 Descubra o quanto vocês se conhecem
+    </div>
+
+  </section>
+</main>
+
 </body>
-</html>"""
-p=Path("/mnt/data/index.html")
-p.write_text(html,encoding="utf-8")
-print(str(p))
+</html>
