@@ -1,0 +1,36 @@
+from pathlib import Path
+html = """<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nós Dois</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#fff4f6,#f4d9e8);color:#351d31}
+main{max-width:480px;margin:auto;min-height:100vh;padding:28px 22px;box-sizing:border-box;display:flex;align-items:center}
+.card{width:100%;background:#fffafc;border-radius:28px;padding:32px 24px;box-shadow:0 12px 35px #0002;text-align:center}
+.logo{font-size:58px;margin-bottom:8px}.heart{color:#d83b78}
+h1{font-size:38px;margin:0 0 10px}p{line-height:1.5;color:#694d61}
+button{width:100%;border:0;border-radius:16px;padding:16px;margin-top:12px;font-size:17px;font-weight:bold;background:#d83b78;color:white}
+.secondary{background:#fff;color:#d83b78;border:2px solid #d83b78}
+.info{margin-top:26px;font-size:14px}.info div{margin:10px 0}
+</style>
+</head>
+<body>
+<main><section class="card">
+<div class="logo"><span class="heart">♥</span> ♥</div>
+<h1>Nós Dois</h1>
+<p><b>Será que você realmente conhece quem está ao seu lado?</b></p>
+<button onclick="alert('Vamos criar sua partida!')">Criar partida</button>
+<button class="secondary" onclick="alert('Digite o código recebido do seu parceiro.')">Entrar com código</button>
+<div class="info">
+<div>💬 <b>15 perguntas sobre vocês</b></div>
+<div>❤️ <b>Cada um responde sobre si mesmo</b></div>
+<div>✨ <b>Descubra o quanto vocês se conhecem</b></div>
+</div>
+</section></main>
+</body>
+</html>"""
+p=Path("/mnt/data/index.html")
+p.write_text(html,encoding="utf-8")
+print(str(p))
