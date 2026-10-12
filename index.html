@@ -1,1 +1,313 @@
-https://chatgpt.com/backend-api/estuary/content?id=file_00000000b9a8820e8b5683a23f6aa2a6&fn=index%281%29.html&cd=attachment&ts=497728&p=fs&cid=1&sig=bb00363285c5cdf1ff7f0b02aefc486637496357de08015c88362e2ded281923&v=0
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N曳s Dois 録わ筒</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff0f3, #ffe1e8);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .app {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    }
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      color: #d6284b;
+      font-size: 36px;
+    }
+    h2 { color: #d6284b; }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 14px 0 7px;
+    }
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+border-radius: 10px;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 18px;
+    background: #d6284b;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover { opacity: .92; }
+  .secondary {
+    background: #f3f3f3;
+    color: #333;
+  }
+  .question {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 22px 0 12px;
+    line-height: 1.35;
+  }
+  .answers button {
+    margin-top: 10px;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  .answers button:hover {
+    background: #fff0f3;
+    border-color: #d6284b;
+  }
+  .hidden { display: none; }
+  .score {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    color: #d6284b;
+    margin: 20px 0;
+  }
+  .progress {
+    color: #777;
+    font-size: 14px;
+text-align: center;
+  }
+  .share {
+    background: #25D366;
+  }
+  .error {
+    color: #b00020;
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+  <main class="app">
+    <section id="home">
+      <h1>N贸s Dois 録わ筒</h1>
+      <p class="subtitle">Será que você realmente se conhecem?</p>
+
+      <label for="name1">Seu nome</label>
+      <input id="name1" type="text" placeholder="Digite seu nome">
+
+      <label for="name2">Nome do parceiro(a)</label>
+      <input id="name2" type="text" placeholder="Digite o nome">
+
+      <button id="startBtn">Começar o jogo</button>
+      <p id="homeError" class="error"></p>
+    </section>
+
+    <section id="game" class="hidden">
+      <p class="progress" id="progress"></p>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+    </section>
+
+    <section id="result" class="hidden">
+      <h1>Resultado 録わ筒</h1>
+      <p id="resultText" style="text-align:center;"></p>
+      <div class="score" id="score"></div>
+      <p id="message" style="text-align:center;"></p>
+      <button class="share" id="shareBtn">Compartilhar no WhatsApp</button>
+      <button class="secondary" id="againBtn">Jogar novamente</button>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        q: "O que mais faz essa pessoa rir?",
+a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
+        correct: 0
+      },
+      {
+        q: "Qual seria um encontro perfeito?",
+        a: ["Jantar romântico", "Cinema", "Passeio", "Ficar em casa juntos"],
+        correct: 3
+      },
+      {
+        q: "O que mais combina com essa pessoa?",
+        a: ["Romantismo", "Aventura", "Humor", "Calma"],
+        correct: 2
+      },
+      {
+        q: "Quando está triste, o que ela mais precisa?",
+        a: ["Um abraço", "Conversa", "Espaço", "Uma distração"],
+        correct: 0
+      },
+      {
+        q: "Qual presente ela provavelmente gostaria mais?",
+        a: ["Chocolate", "Perfume", "Algo personalizado", "Uma experiência"],
+        correct: 2
+      },
+      {
+        q: "Qual programa vocês fariam juntos?",
+        a: ["Viajar", "Cozinhar", "Assistir filme", "Sair para comer"],
+        correct: 0
+      },
+      {
+        q: "Qual característica mais combina com ela?",
+        a: ["Carinhosa", "Engraçada", "Ciumenta", "Sincera"],
+        correct: 1
+      },
+      {
+        q: "O que mais pode melhorar um dia ruim?",
+        a: ["Comida", "Carinho", "Música", "Dormir"],
+        correct: 1
+      },
+      {
+        q: "Qual seria uma viagem dos sonhos?",
+        a: ["Praia", "Montanha", "Cidade grande", "Lugar tranquilo"],
+        correct: 0
+      },
+      {
+        q: "O que mais importa em um relacionamento?",
+        a: ["Confiança", "Carinho", "Diversão", "Companheirismo"],
+        correct: 0
+},
+      {
+        q: "Qual dessas opções combina mais com um sábado perfeito?",
+        a: ["Sair", "Dormir até tarde", "Viajar", "Ficar juntos"],
+        correct: 3
+      },
+      {
+        q: "Quando acontece uma discussão, o melhor é:",
+        a: ["Conversar", "Esperar passar", "Fazer uma brincadeira", "Mudar de assunto"],
+        correct: 0
+      },
+      {
+        q: "Qual palavra melhor define vocês?",
+        a: ["Amor", "Parceria", "Diversão", "Tudo junto"],
+        correct: 3
+      },
+      {
+        q: "O que vocês deveriam fazer mais juntos?",
+        a: ["Conversar", "Sair", "Viajar", "Demonstrar carinho"],
+        correct: 3
+      },
+      {
+        q: "Qual seria o maior motivo para comemorar hoje?",
+        a: ["O amor", "A amizade", "A parceria", "Estar juntos"],
+        correct: 3
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let name1 = "";
+    let name2 = "";
+
+    const home = document.getElementById("home");
+    const game = document.getElementById("game");
+    const result = document.getElementById("result");
+    const question = document.getElementById("question");
+    const answers = document.getElementById("answers");
+    const progress = document.getElementById("progress");
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      name1 = document.getElementById("name1").value.trim();
+      name2 = document.getElementById("name2").value.trim();
+
+      if (!name1 || !name2) {
+        document.getElementById("homeError").textContent =
+          "Digite os dois nomes para começar.";
+return;
+}
+
+current = 0;
+score = 0;
+document.getElementById("homeError").textContent = "";
+
+home.classList.add("hidden");
+result.classList.add("hidden");
+game.classList.remove("hidden");
+showQuestion();
+});
+
+function showQuestion() {
+  const item = questions[current];
+  progress.textContent = `Pergunta ${current + 1} de ${questions.length}`;
+  question.textContent = item.q;
+  answers.innerHTML = "";
+
+  item.a.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+    btn.addEventListener("click", () => chooseAnswer(index));
+    answers.appendChild(btn);
+  });
+}
+
+function chooseAnswer(index) {
+  if (index === questions[current].correct) score++;
+
+  current++;
+
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  game.classList.add("hidden");
+  result.classList.remove("hidden");
+
+  const percentage = Math.round((score / questions.length) * 100);
+  document.getElementById("resultText").textContent =
+    `${name1} e ${name2}, vocês fizeram ${score} de ${questions.length} pontos.`;
+}
+document.getElementById("score").textContent = `${percentage}%`;
+
+let message = "Ainda d谩 para descobrir muita coisa um sobre o outro!  donner";
+if (percentage >= 80) {
+  message = "Uau! Voc锚s se conhecem muito bem! 鈫戔箠鏁";
+} else if (percentage >= 60) {
+  message = "Mandaram bem! Tem bastante sintonia a铆!  maquin7";
+}
+
+document.getElementById("message").textContent = message;
+}
+
+document.getElementById("againBtn").addEventListener("click", () => {
+  result.classList.add("hidden");
+  home.classList.remove("hidden");
+});
+
+document.getElementById("shareBtn").addEventListener("click", () => {
+  const percentage = Math.round((score / questions.length) * 100);
+  const text =
+    `鈫戔 N贸s Dois 鈫戔\n${name1} e ${name2} fizeram ${percentage}% no desafio!\nSer谩 que voc锚 consegue superar?`;
+
+  const url = "https://wa.me" + encodeURIComponent(text);
+  window.open(url, "_blank");
+});
+</script>
+</body>
+</html>
