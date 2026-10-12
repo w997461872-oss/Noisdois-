@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>N曳s Dois 録わ筒</title>
+  <title>Nós Dois ❤️</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -23,7 +23,7 @@
       background: #fff;
       border-radius: 22px;
       padding: 28px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 35px rgba(0,0,0,.12);
     }
     h1 {
       margin: 0 0 8px;
@@ -46,71 +46,71 @@
       width: 100%;
       padding: 13px;
       border: 1px solid #ddd;
-border-radius: 10px;
-    font-size: 16px;
-  }
-  button {
-    width: 100%;
-    border: 0;
-    border-radius: 10px;
-    padding: 14px;
-    margin-top: 18px;
-    background: #d6284b;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button:hover { opacity: .92; }
-  .secondary {
-    background: #f3f3f3;
-    color: #333;
-  }
-  .question {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 22px 0 12px;
-    line-height: 1.35;
-  }
-  .answers button {
-    margin-top: 10px;
-    background: #fff;
-    color: #333;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  .answers button:hover {
-    background: #fff0f3;
-    border-color: #d6284b;
-  }
-  .hidden { display: none; }
-  .score {
-    font-size: 48px;
-    font-weight: bold;
-    text-align: center;
-    color: #d6284b;
-    margin: 20px 0;
-  }
-  .progress {
-    color: #777;
-    font-size: 14px;
-text-align: center;
-  }
-  .share {
-    background: #25D366;
-  }
-  .error {
-    color: #b00020;
-    text-align: center;
-    margin-top: 10px;
-  }
-</style>
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 18px;
+      background: #d6284b;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { opacity: .92; }
+    .secondary {
+      background: #f3f3f3;
+      color: #333;
+    }
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 22px 0 12px;
+      line-height: 1.35;
+    }
+    .answers button {
+      margin-top: 10px;
+      background: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .answers button:hover {
+      background: #fff0f3;
+      border-color: #d6284b;
+    }
+    .hidden { display: none; }
+    .score {
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      color: #d6284b;
+      margin: 20px 0;
+    }
+    .progress {
+      color: #777;
+      font-size: 14px;
+      text-align: center;
+    }
+    .share {
+      background: #25D366;
+    }
+    .error {
+      color: #b00020;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <main class="app">
     <section id="home">
-      <h1>N贸s Dois 録わ筒</h1>
-      <p class="subtitle">Será que você realmente se conhecem?</p>
+      <h1>Nós Dois ❤️</h1>
+      <p class="subtitle">Será que vocês realmente se conhecem?</p>
 
       <label for="name1">Seu nome</label>
       <input id="name1" type="text" placeholder="Digite seu nome">
@@ -129,7 +129,7 @@ text-align: center;
     </section>
 
     <section id="result" class="hidden">
-      <h1>Resultado 録わ筒</h1>
+      <h1>Resultado ❤️</h1>
       <p id="resultText" style="text-align:center;"></p>
       <div class="score" id="score"></div>
       <p id="message" style="text-align:center;"></p>
@@ -142,7 +142,7 @@ text-align: center;
     const questions = [
       {
         q: "O que mais faz essa pessoa rir?",
-a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
+        a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
         correct: 0
       },
       {
@@ -189,7 +189,7 @@ a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
         q: "O que mais importa em um relacionamento?",
         a: ["Confiança", "Carinho", "Diversão", "Companheirismo"],
         correct: 0
-},
+      },
       {
         q: "Qual dessas opções combina mais com um sábado perfeito?",
         a: ["Sair", "Dormir até tarde", "Viajar", "Ficar juntos"],
@@ -236,78 +236,78 @@ a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
       if (!name1 || !name2) {
         document.getElementById("homeError").textContent =
           "Digite os dois nomes para começar.";
-return;
-}
+        return;
+      }
 
-current = 0;
-score = 0;
-document.getElementById("homeError").textContent = "";
+      current = 0;
+      score = 0;
+      document.getElementById("homeError").textContent = "";
 
-home.classList.add("hidden");
-result.classList.add("hidden");
-game.classList.remove("hidden");
-showQuestion();
-});
+      home.classList.add("hidden");
+      result.classList.add("hidden");
+      game.classList.remove("hidden");
+      showQuestion();
+    });
 
-function showQuestion() {
-  const item = questions[current];
-  progress.textContent = `Pergunta ${current + 1} de ${questions.length}`;
-  question.textContent = item.q;
-  answers.innerHTML = "";
+    function showQuestion() {
+      const item = questions[current];
+      progress.textContent = `Pergunta ${current + 1} de ${questions.length}`;
+      question.textContent = item.q;
+      answers.innerHTML = "";
 
-  item.a.forEach((answer, index) => {
-    const btn = document.createElement("button");
-    btn.textContent = answer;
-    btn.addEventListener("click", () => chooseAnswer(index));
-    answers.appendChild(btn);
-  });
-}
+      item.a.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.addEventListener("click", () => chooseAnswer(index));
+        answers.appendChild(btn);
+      });
+    }
 
-function chooseAnswer(index) {
-  if (index === questions[current].correct) score++;
+    function chooseAnswer(index) {
+      if (index === questions[current].correct) score++;
 
-  current++;
+      current++;
 
-  if (current < questions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
-}
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
 
-function showResult() {
-  game.classList.add("hidden");
-  result.classList.remove("hidden");
+    function showResult() {
+      game.classList.add("hidden");
+      result.classList.remove("hidden");
 
-  const percentage = Math.round((score / questions.length) * 100);
-  document.getElementById("resultText").textContent =
-    `${name1} e ${name2}, vocês fizeram ${score} de ${questions.length} pontos.`;
-}
-document.getElementById("score").textContent = `${percentage}%`;
+      const percentage = Math.round((score / questions.length) * 100);
+      document.getElementById("resultText").textContent =
+        `${name1} e ${name2}, vocês fizeram ${score} de ${questions.length} pontos.`;
 
-let message = "Ainda d谩 para descobrir muita coisa um sobre o outro!  donner";
-if (percentage >= 80) {
-  message = "Uau! Voc锚s se conhecem muito bem! 鈫戔箠鏁";
-} else if (percentage >= 60) {
-  message = "Mandaram bem! Tem bastante sintonia a铆!  maquin7";
-}
+      document.getElementById("score").textContent = `${percentage}%`;
 
-document.getElementById("message").textContent = message;
-}
+      let message = "Ainda dá para descobrir muita coisa um sobre o outro! 😄";
+      if (percentage >= 80) {
+        message = "Uau! Vocês se conhecem muito bem! ❤️🔥";
+      } else if (percentage >= 60) {
+        message = "Mandaram bem! Tem bastante sintonia aí! 🥰";
+      }
 
-document.getElementById("againBtn").addEventListener("click", () => {
-  result.classList.add("hidden");
-  home.classList.remove("hidden");
-});
+      document.getElementById("message").textContent = message;
+    }
 
-document.getElementById("shareBtn").addEventListener("click", () => {
-  const percentage = Math.round((score / questions.length) * 100);
-  const text =
-    `鈫戔 N贸s Dois 鈫戔\n${name1} e ${name2} fizeram ${percentage}% no desafio!\nSer谩 que voc锚 consegue superar?`;
+    document.getElementById("againBtn").addEventListener("click", () => {
+      result.classList.add("hidden");
+      home.classList.remove("hidden");
+    });
 
-  const url = "https://wa.me" + encodeURIComponent(text);
-  window.open(url, "_blank");
-});
-</script>
+    document.getElementById("shareBtn").addEventListener("click", () => {
+      const percentage = Math.round((score / questions.length) * 100);
+      const text =
+        `❤️ Nós Dois ❤️\n${name1} e ${name2} fizeram ${percentage}% no desafio!\nSerá que você consegue superar?`;
+
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+    });
+  </script>
 </body>
 </html>
