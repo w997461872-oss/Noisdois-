@@ -1,327 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nós Dois ❤️</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    *{box-sizing:border-box}
-    body{
-      margin:0;font-family:Arial,sans-serif;
-      background:linear-gradient(135deg,#ff4f81,#ff8fab);
-      min-height:100vh;padding:20px;color:#333;
-    }
-    .container{
-      max-width:520px;margin:30px auto;background:#fff;border-radius:24px;
-      padding:28px;box-shadow:0 12px 35px rgba(0,0,0,.18);
-    }
-    h1{text-align:center;color:#e91e63;margin:0 0 8px}
-    .subtitle{text-align:center;color:#777;margin-bottom:25px}
-    input,button{
-      width:100%;padding:14px;border-radius:12px;font-size:16px;
-      margin-top:10px;
-    }
-    input{border:1px solid #ddd}
-    button{
-      border:0;background:#e91e63;color:#fff;font-weight:bold;cursor:pointer;
-    }
-    button:hover{opacity:.92}
-    .question{font-size:20px;font-weight:bold;margin:20px 0}
-    .answer{background:#f5f5f5;color:#333;text-align:left}
-    .answer:hover{background:#ffe1ea}
-    .hidden{display:none}
-    .score{text-align:center;font-size:52px;font-weight:bold;color:#e91e63}
-    .code{
-      background:#fff0f5;border:2px dashed #e91e63;border-radius:14px;
-      padding:15px;text-align:center;font-size:28px;font-weight:bold;
-      letter-spacing:4px;margin:18px 0;
-    }
-    .status{text-align:center;margin:12px 0;font-size:14px;color:#666}
-    .small{text-align:center;color:#777;font-size:13px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nós Dois ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;font-family:Arial,sans-serif;background:#ffe8ee;color:#333}
+.card{max-width:600px;margin:auto;background:white;padding:25px;border-radius:22px;box-shadow:0 4px 20px #0001}
+h1,h2{text-align:center;color:#d6285c}
+input[type=text],input:not([type]){width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
+button{width:100%;padding:15px;margin-top:12px;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;background:#e83267;color:white}
+.secondary{background:#eee;color:#333}
+.whatsapp{background:#25D366;color:white}
+.hidden{display:none}
+.question{font-size:20px;font-weight:bold;margin:25px 0 15px}
+label{display:block;padding:13px;margin:8px 0;background:#fff3f6;border-radius:10px}
+.code{text-align:center;font-size:30px;font-weight:bold;letter-spacing:5px}
+a{color:#c51f50;overflow-wrap:anywhere}
+.linkbox{margin-top:20px;padding:15px;background:#fff3f6;border-radius:10px;overflow-wrap:anywhere}
+.small{text-align:center;color:#777;font-size:13px}
+</style>
 </head>
 <body>
-<div class="container">
+<div class="card">
 
-  <section id="startScreen">
-    <h1>Nós Dois ❤️</h1>
-    <div class="subtitle">Descubra o quanto vocês se conhecem!</div>
+<section id="inicio">
+<h1>❤️ Nós Dois ❤️</h1>
+<p style="text-align:center">Descubra o quanto vocês se conhecem!</p>
+<input id="nome1" placeholder="Seu nome">
+<input id="nome2" placeholder="Nome da outra pessoa">
+<button onclick="iniciar()">Começar o quiz</button>
+</section>
 
-    <input id="name1" type="text" placeholder="Seu nome">
-    <input id="name2" type="text" placeholder="Nome da outra pessoa">
+<section id="quiz" class="hidden">
+<h2 id="contador"></h2>
+<div id="pergunta"></div>
+<button onclick="proxima()">Próxima pergunta</button>
+</section>
 
-    <button onclick="startGame()">Começar o jogo</button>
+<section id="resultado" class="hidden">
+<h1>Resultado ❤️</h1>
+<p id="textoResultado"></p>
+<div id="porcentagem" style="font-size:55px;text-align:center;color:#d6285c;font-weight:bold"></div>
+<p id="mensagem" style="text-align:center"></p>
+<p style="text-align:center">Código da partida:</p>
+<div class="code" id="codigo"></div>
+<button class="whatsapp" onclick="compartilhar()">Compartilhar no WhatsApp</button>
+<button class="secondary" onclick="copiar()">Copiar link da partida</button>
+<div class="linkbox">
+<strong>🔗 Entre aqui para jogar:</strong><br>
+<a id="linkJogo" href="#"></a>
+</div>
+<button class="secondary" onclick="location.href=location.pathname">Jogar novamente</button>
+</section>
 
-    <p class="small">Depois de responder, você receberá um código para compartilhar.</p>
-  </section>
-
-  <section id="quizScreen" class="hidden">
-    <div id="progress"></div>
-    <div id="question" class="question"></div>
-    <div id="answers"></div>
-  </section>
-
-  <section id="resultScreen" class="hidden">
-    <h1>Resultado ❤️</h1>
-    <div id="score" class="score">0%</div>
-    <p id="message" style="text-align:center;font-size:18px"></p>
-
-    <h3 style="text-align:center">Código da partida</h3>
-    <div id="gameCode" class="code"></div>
-
-    <div id="saveStatus" class="status">Salvando partida...</div>
-
-    <button onclick="shareWhatsApp()">Compartilhar no WhatsApp</button>
-    <button onclick="location.reload()">Jogar novamente</button>
-  </section>
+<section id="convite" class="hidden">
+<h1>❤️ Nós Dois ❤️</h1>
+<p>Você recebeu um convite para jogar!</p>
+<p>Código da partida:</p>
+<div class="code" id="codigoConvite"></div>
+<p>Para participar, abra o Nós Dois e informe o código ao seu parceiro.</p>
+</section>
 
 </div>
 
 <script>
-  // ============================================================
-  // SUPABASE
-  // ============================================================
-  const SUPABASE_URL = "https://vslppfowofljjpnqiccq.supabase.co";
+const perguntas=[
+"O que mais faz essa pessoa rir?",
+"Qual comida essa pessoa mais gosta?",
+"O que mais deixa essa pessoa feliz?",
+"O que costuma deixar essa pessoa triste?",
+"Qual é o maior sonho dessa pessoa?",
+"Qual lugar ela gostaria de conhecer?",
+"Qual é uma qualidade marcante dessa pessoa?",
+"O que ela poderia melhorar?",
+"O que gosta de fazer no tempo livre?",
+"Qual presente deixaria essa pessoa feliz?",
+"Qual estilo musical combina com ela?",
+"O que mais irrita essa pessoa?",
+"Qual bebida ela escolheria?",
+"Onde gostaria de passar um fim de semana?",
+"O que ela mais valoriza em um relacionamento?"
+];
 
-  // Cole aqui a SUA chave PUBLICÁVEL do Supabase.
-  // Nunca use a chave service_role neste arquivo.
-  const SUPABASE_KEY = "COLE_AQUI_SUA_CHAVE_PUBLICAVEL";
+let atual=0;
+let pontos=0;
+let nome1="";
+let nome2="";
+let codigo="";
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+function novoCodigo(){
+ const letras="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+ let resultado="";
+ for(let i=0;i<6;i++){
+  resultado+=letras[Math.floor(Math.random()*letras.length)];
+ }
+ return resultado;
+}
 
-  // ============================================================
-  // PERGUNTAS
-  // ============================================================
-  const questions = [
-    {
-      q:"O que mais faz essa pessoa rir?",
-      a:["Piadas e brincadeiras","Filmes e séries","Memes","Coisas inesperadas"],
-      correct:0
-    },
-    {
-      q:"Qual seria um encontro perfeito?",
-      a:["Jantar romântico","Cinema","Passeio","Ficar em casa juntos"],
-      correct:3
-    },
-    {
-      q:"O que mais combina com essa pessoa?",
-      a:["Romantismo","Aventura","Humor","Calma"],
-      correct:2
-    },
-    {
-      q:"Quando está triste, o que ela mais precisa?",
-      a:["Um abraço","Conversa","Espaço","Uma distração"],
-      correct:0
-    },
-    {
-      q:"Qual presente ela provavelmente gostaria mais?",
-      a:["Chocolate","Perfume","Algo personalizado","Uma experiência"],
-      correct:2
-    },
-    {
-      q:"Qual programa vocês fariam juntos?",
-      a:["Viajar","Cozinhar","Assistir filme","Sair para comer"],
-      correct:0
-    },
-    {
-      q:"Qual característica mais combina com ela?",
-      a:["Carinhosa","Engraçada","Ciumenta","Sincera"],
-      correct:1
-    },
-    {
-      q:"O que mais pode melhorar um dia ruim?",
-      a:["Comida","Carinho","Música","Dormir"],
-      correct:1
-    },
-    {
-      q:"Qual seria uma viagem dos sonhos?",
-      a:["Praia","Montanha","Cidade grande","Lugar tranquilo"],
-      correct:0
-    },
-    {
-      q:"O que mais importa em um relacionamento?",
-      a:["Confiança","Carinho","Diversão","Companheirismo"],
-      correct:0
-    },
-    {
-      q:"Qual dessas opções combina mais com um sábado perfeito?",
-      a:["Sair","Dormir até tarde","Viajar","Ficar juntos"],
-      correct:3
-    },
-    {
-      q:"Quando acontece uma discussão, o melhor é:",
-      a:["Conversar","Esperar passar","Fazer uma brincadeira","Mudar de assunto"],
-      correct:0
-    },
-    {
-      q:"Qual palavra melhor define vocês?",
-      a:["Amor","Parceria","Diversão","Tudo junto"],
-      correct:3
-    },
-    {
-      q:"O que vocês deveriam fazer mais juntos?",
-      a:["Conversar","Sair","Viajar","Demonstrar carinho"],
-      correct:3
-    },
-    {
-      q:"Qual seria o maior motivo para comemorar hoje?",
-      a:["O amor","A amizade","A parceria","Estar juntos"],
-      correct:3
-    }
-  ];
+/* IMPORTANTE:
+   O convite usa o endereço público do site.
+   Não usa o caminho local content://downloads do celular. */
+function enderecoBase(){
+ return "https://noisdois-app-2026.netlify.app";
+}
 
-  let current = 0;
-  let score = 0;
-  let name1 = "";
-  let name2 = "";
-  let answersPlayer1 = [];
-  let gameCode = "";
+function enderecoJogo(){
+ return enderecoBase()+"/?partida="+encodeURIComponent(codigo);
+}
 
-  function generateGameCode(){
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for(let i=0;i<6;i++){
-      code += chars[Math.floor(Math.random()*chars.length)];
-    }
-    return code;
-  }
+function iniciar(){
+ nome1=document.getElementById("nome1").value.trim()||"Jogador 1";
+ nome2=document.getElementById("nome2").value.trim()||"Jogador 2";
+ codigo=novoCodigo();
+ atual=0;
+ pontos=0;
+ document.getElementById("inicio").classList.add("hidden");
+ document.getElementById("quiz").classList.remove("hidden");
+ mostrarPergunta();
+}
 
-  function startGame(){
-    name1 = document.getElementById("name1").value.trim();
-    name2 = document.getElementById("name2").value.trim();
+function mostrarPergunta(){
+ document.getElementById("contador").textContent=
+ "Pergunta "+(atual+1)+" de "+perguntas.length;
 
-    if(!name1 || !name2){
-      alert("Digite os dois nomes para começar.");
-      return;
-    }
+ document.getElementById("pergunta").innerHTML=
+ '<div class="question">'+perguntas[atual]+'</div>'+
+ '<label><input type="radio" name="resposta" value="1"> Sim, com certeza</label>'+
+ '<label><input type="radio" name="resposta" value="1"> Provavelmente</label>'+
+ '<label><input type="radio" name="resposta" value="0"> Não sei</label>'+
+ '<label><input type="radio" name="resposta" value="0"> Provavelmente não</label>';
+}
 
-    current = 0;
-    score = 0;
-    answersPlayer1 = [];
-    gameCode = generateGameCode();
+function proxima(){
+ const resposta=document.querySelector('input[name="resposta"]:checked');
+ if(!resposta){
+  alert("Escolha uma resposta antes de continuar.");
+  return;
+ }
+ if(resposta.value==="1") pontos++;
+ atual++;
+ if(atual<perguntas.length){
+  mostrarPergunta();
+ }else{
+  mostrarResultado();
+ }
+}
 
-    document.getElementById("startScreen").classList.add("hidden");
-    document.getElementById("quizScreen").classList.remove("hidden");
+function mostrarResultado(){
+ document.getElementById("quiz").classList.add("hidden");
+ document.getElementById("resultado").classList.remove("hidden");
 
-    showQuestion();
-  }
+ const percentual=Math.round(pontos/perguntas.length*100);
+ document.getElementById("textoResultado").textContent=
+ nome1+" fez o quiz sobre "+nome2+".";
+ document.getElementById("porcentagem").textContent=percentual+"%";
+ document.getElementById("codigo").textContent=codigo;
 
-  function showQuestion(){
-    const q = questions[current];
+ let mensagem="Ainda dá para descobrir muito mais um sobre o outro! 😅";
+ if(percentual>=80) mensagem="Vocês se conhecem muito bem! ❤️";
+ else if(percentual>=60) mensagem="Mandaram bem! 😍";
+ else if(percentual>=40) mensagem="Nada mal! Continuem se conhecendo! 😉";
 
-    document.getElementById("progress").textContent =
-      `Pergunta ${current + 1} de ${questions.length}`;
+ document.getElementById("mensagem").textContent=mensagem;
 
-    document.getElementById("question").textContent = q.q;
+ const link=enderecoJogo();
+ const elemento=document.getElementById("linkJogo");
+ elemento.href=link;
+ elemento.textContent=link;
+}
 
-    const answers = document.getElementById("answers");
-    answers.innerHTML = "";
+function compartilhar(){
+ const percentual=Math.round(pontos/perguntas.length*100);
+ const link=enderecoJogo();
 
-    q.a.forEach((answer,index)=>{
-      const button = document.createElement("button");
-      button.className = "answer";
-      button.textContent = answer;
-      button.onclick = ()=>chooseAnswer(index);
-      answers.appendChild(button);
-    });
-  }
+ const mensagem=
+ "❤️ Nós Dois ❤️\n\n"+
+ nome1+" fez o quiz sobre "+nome2+"!\n"+
+ "Acertou "+percentual+"% das perguntas.\n\n"+
+ "🎮 ENTRE AQUI PARA JOGAR:\n"+
+ link+"\n\n"+
+ "🔑 Código da partida: "+codigo;
 
-  function chooseAnswer(index){
-    const q = questions[current];
+ window.location.href="https://wa.me/?text="+encodeURIComponent(mensagem);
+}
 
-    if(index === q.correct){
-      score++;
-    }
+async function copiar(){
+ const link=enderecoJogo();
+ try{
+  await navigator.clipboard.writeText(link);
+  alert("Link copiado! Agora cole no WhatsApp.");
+ }catch(e){
+  prompt("Copie o link abaixo:",link);
+ }
+}
 
-    answersPlayer1.push({
-      pergunta:q.q,
-      resposta:q.a[index],
-      alternativa:index
-    });
+const parametros=new URLSearchParams(window.location.search);
+const convite=parametros.get("partida");
 
-    current++;
-
-    if(current < questions.length){
-      showQuestion();
-    }else{
-      showResult();
-    }
-  }
-
-  async function saveGame(){
-    const status = document.getElementById("saveStatus");
-
-    try{
-      const data = {
-        codigo: gameCode,
-        jogador1_respostas: JSON.stringify({
-          nome:name1,
-          respostas:answersPlayer1,
-          pontuacao:score
-        }),
-        jogador2_respostas: ""
-      };
-
-      const { error } = await supabaseClient
-        .from("Partidas")
-        .insert([data]);
-
-      if(error){
-        console.error(error);
-        status.textContent =
-          "A partida foi criada na tela, mas o Supabase recusou o salvamento. Verifique as políticas/RLS.";
-        return;
-      }
-
-      status.textContent = "Partida salva com sucesso no Supabase! ✅";
-    }catch(error){
-      console.error(error);
-      status.textContent = "Não foi possível salvar. Confira a conexão do Supabase.";
-    }
-  }
-
-  function showResult(){
-    document.getElementById("quizScreen").classList.add("hidden");
-    document.getElementById("resultScreen").classList.remove("hidden");
-
-    const percentage = Math.round((score / questions.length) * 100);
-
-    document.getElementById("score").textContent = percentage + "%";
-    document.getElementById("gameCode").textContent = gameCode;
-
-    let message = "";
-
-    if(percentage >= 80){
-      message = "Uau! Vocês se conhecem muito bem! ❤️🔥";
-    }else if(percentage >= 60){
-      message = "Mandaram bem! Tem bastante sintonia aí! 🥰";
-    }else{
-      message = "Ainda dá para descobrir muita coisa um sobre o outro! 😄";
-    }
-
-    document.getElementById("message").textContent = message;
-
-    saveGame();
-  }
-
-  function shareWhatsApp(){
-    const percentage = Math.round((score / questions.length) * 100);
-
-    const text =
-      `❤️ Nós Dois ❤️\n\n` +
-      `${name1} fez o quiz sobre ${name2}!\n` +
-      `Acertou ${percentage}% das perguntas.\n\n` +
-      `Código da partida: ${gameCode}\n\n` +
-      `Agora é sua vez! 😍`;
-
-    const url = "https://wa.me/?text=" + encodeURIComponent(text);
-
-    window.open(url,"_blank");
-  }
+if(convite){
+ document.getElementById("inicio").classList.add("hidden");
+ document.getElementById("convite").classList.remove("hidden");
+ document.getElementById("codigoConvite").textContent=convite;
+}
 </script>
 </body>
 </html>
