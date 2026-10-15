@@ -4,310 +4,324 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nós Dois ❤️</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #fff0f3, #ffe1e8);
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Arial,sans-serif;
+      background:linear-gradient(135deg,#ff4f81,#ff8fab);
+      min-height:100vh;padding:20px;color:#333;
     }
-    .app {
-      width: 100%;
-      max-width: 520px;
-      background: #fff;
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 12px 35px rgba(0,0,0,.12);
+    .container{
+      max-width:520px;margin:30px auto;background:#fff;border-radius:24px;
+      padding:28px;box-shadow:0 12px 35px rgba(0,0,0,.18);
     }
-    h1 {
-      margin: 0 0 8px;
-      text-align: center;
-      color: #d6284b;
-      font-size: 36px;
+    h1{text-align:center;color:#e91e63;margin:0 0 8px}
+    .subtitle{text-align:center;color:#777;margin-bottom:25px}
+    input,button{
+      width:100%;padding:14px;border-radius:12px;font-size:16px;
+      margin-top:10px;
     }
-    h2 { color: #d6284b; }
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin-bottom: 24px;
+    input{border:1px solid #ddd}
+    button{
+      border:0;background:#e91e63;color:#fff;font-weight:bold;cursor:pointer;
     }
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 14px 0 7px;
+    button:hover{opacity:.92}
+    .question{font-size:20px;font-weight:bold;margin:20px 0}
+    .answer{background:#f5f5f5;color:#333;text-align:left}
+    .answer:hover{background:#ffe1ea}
+    .hidden{display:none}
+    .score{text-align:center;font-size:52px;font-weight:bold;color:#e91e63}
+    .code{
+      background:#fff0f5;border:2px dashed #e91e63;border-radius:14px;
+      padding:15px;text-align:center;font-size:28px;font-weight:bold;
+      letter-spacing:4px;margin:18px 0;
     }
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 10px;
-      padding: 14px;
-      margin-top: 18px;
-      background: #d6284b;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { opacity: .92; }
-    .secondary {
-      background: #f3f3f3;
-      color: #333;
-    }
-    .question {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 22px 0 12px;
-      line-height: 1.35;
-    }
-    .answers button {
-      margin-top: 10px;
-      background: #fff;
-      color: #333;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-    .answers button:hover {
-      background: #fff0f3;
-      border-color: #d6284b;
-    }
-    .hidden { display: none; }
-    .score {
-      font-size: 48px;
-      font-weight: bold;
-      text-align: center;
-      color: #d6284b;
-      margin: 20px 0;
-    }
-    .progress {
-      color: #777;
-      font-size: 14px;
-      text-align: center;
-    }
-    .share {
-      background: #25D366;
-    }
-    .error {
-      color: #b00020;
-      text-align: center;
-      margin-top: 10px;
-    }
+    .status{text-align:center;margin:12px 0;font-size:14px;color:#666}
+    .small{text-align:center;color:#777;font-size:13px}
   </style>
 </head>
 <body>
-  <main class="app">
-    <section id="home">
-      <h1>Nós Dois ❤️</h1>
-      <p class="subtitle">Será que vocês realmente se conhecem?</p>
+<div class="container">
 
-      <label for="name1">Seu nome</label>
-      <input id="name1" type="text" placeholder="Digite seu nome">
+  <section id="startScreen">
+    <h1>Nós Dois ❤️</h1>
+    <div class="subtitle">Descubra o quanto vocês se conhecem!</div>
 
-      <label for="name2">Nome do parceiro(a)</label>
-      <input id="name2" type="text" placeholder="Digite o nome">
+    <input id="name1" type="text" placeholder="Seu nome">
+    <input id="name2" type="text" placeholder="Nome da outra pessoa">
 
-      <button id="startBtn">Começar o jogo</button>
-      <p id="homeError" class="error"></p>
-    </section>
+    <button onclick="startGame()">Começar o jogo</button>
 
-    <section id="game" class="hidden">
-      <p class="progress" id="progress"></p>
-      <div class="question" id="question"></div>
-      <div class="answers" id="answers"></div>
-    </section>
+    <p class="small">Depois de responder, você receberá um código para compartilhar.</p>
+  </section>
 
-    <section id="result" class="hidden">
-      <h1>Resultado ❤️</h1>
-      <p id="resultText" style="text-align:center;"></p>
-      <div class="score" id="score"></div>
-      <p id="message" style="text-align:center;"></p>
-      <button class="share" id="shareBtn">Compartilhar no WhatsApp</button>
-      <button class="secondary" id="againBtn">Jogar novamente</button>
-    </section>
-  </main>
+  <section id="quizScreen" class="hidden">
+    <div id="progress"></div>
+    <div id="question" class="question"></div>
+    <div id="answers"></div>
+  </section>
 
-  <script>
-    const questions = [
-      {
-        q: "O que mais faz essa pessoa rir?",
-        a: ["Piadas e brincadeiras", "Filmes e séries", "Memes", "Coisas inesperadas"],
-        correct: 0
-      },
-      {
-        q: "Qual seria um encontro perfeito?",
-        a: ["Jantar romântico", "Cinema", "Passeio", "Ficar em casa juntos"],
-        correct: 3
-      },
-      {
-        q: "O que mais combina com essa pessoa?",
-        a: ["Romantismo", "Aventura", "Humor", "Calma"],
-        correct: 2
-      },
-      {
-        q: "Quando está triste, o que ela mais precisa?",
-        a: ["Um abraço", "Conversa", "Espaço", "Uma distração"],
-        correct: 0
-      },
-      {
-        q: "Qual presente ela provavelmente gostaria mais?",
-        a: ["Chocolate", "Perfume", "Algo personalizado", "Uma experiência"],
-        correct: 2
-      },
-      {
-        q: "Qual programa vocês fariam juntos?",
-        a: ["Viajar", "Cozinhar", "Assistir filme", "Sair para comer"],
-        correct: 0
-      },
-      {
-        q: "Qual característica mais combina com ela?",
-        a: ["Carinhosa", "Engraçada", "Ciumenta", "Sincera"],
-        correct: 1
-      },
-      {
-        q: "O que mais pode melhorar um dia ruim?",
-        a: ["Comida", "Carinho", "Música", "Dormir"],
-        correct: 1
-      },
-      {
-        q: "Qual seria uma viagem dos sonhos?",
-        a: ["Praia", "Montanha", "Cidade grande", "Lugar tranquilo"],
-        correct: 0
-      },
-      {
-        q: "O que mais importa em um relacionamento?",
-        a: ["Confiança", "Carinho", "Diversão", "Companheirismo"],
-        correct: 0
-      },
-      {
-        q: "Qual dessas opções combina mais com um sábado perfeito?",
-        a: ["Sair", "Dormir até tarde", "Viajar", "Ficar juntos"],
-        correct: 3
-      },
-      {
-        q: "Quando acontece uma discussão, o melhor é:",
-        a: ["Conversar", "Esperar passar", "Fazer uma brincadeira", "Mudar de assunto"],
-        correct: 0
-      },
-      {
-        q: "Qual palavra melhor define vocês?",
-        a: ["Amor", "Parceria", "Diversão", "Tudo junto"],
-        correct: 3
-      },
-      {
-        q: "O que vocês deveriam fazer mais juntos?",
-        a: ["Conversar", "Sair", "Viajar", "Demonstrar carinho"],
-        correct: 3
-      },
-      {
-        q: "Qual seria o maior motivo para comemorar hoje?",
-        a: ["O amor", "A amizade", "A parceria", "Estar juntos"],
-        correct: 3
-      }
-    ];
+  <section id="resultScreen" class="hidden">
+    <h1>Resultado ❤️</h1>
+    <div id="score" class="score">0%</div>
+    <p id="message" style="text-align:center;font-size:18px"></p>
 
-    let current = 0;
-    let score = 0;
-    let name1 = "";
-    let name2 = "";
+    <h3 style="text-align:center">Código da partida</h3>
+    <div id="gameCode" class="code"></div>
 
-    const home = document.getElementById("home");
-    const game = document.getElementById("game");
-    const result = document.getElementById("result");
-    const question = document.getElementById("question");
+    <div id="saveStatus" class="status">Salvando partida...</div>
+
+    <button onclick="shareWhatsApp()">Compartilhar no WhatsApp</button>
+    <button onclick="location.reload()">Jogar novamente</button>
+  </section>
+
+</div>
+
+<script>
+  // ============================================================
+  // SUPABASE
+  // ============================================================
+  const SUPABASE_URL = "https://vslppfowofljjpnqiccq.supabase.co";
+
+  // Cole aqui a SUA chave PUBLICÁVEL do Supabase.
+  // Nunca use a chave service_role neste arquivo.
+  const SUPABASE_KEY = "COLE_AQUI_SUA_CHAVE_PUBLICAVEL";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  // ============================================================
+  // PERGUNTAS
+  // ============================================================
+  const questions = [
+    {
+      q:"O que mais faz essa pessoa rir?",
+      a:["Piadas e brincadeiras","Filmes e séries","Memes","Coisas inesperadas"],
+      correct:0
+    },
+    {
+      q:"Qual seria um encontro perfeito?",
+      a:["Jantar romântico","Cinema","Passeio","Ficar em casa juntos"],
+      correct:3
+    },
+    {
+      q:"O que mais combina com essa pessoa?",
+      a:["Romantismo","Aventura","Humor","Calma"],
+      correct:2
+    },
+    {
+      q:"Quando está triste, o que ela mais precisa?",
+      a:["Um abraço","Conversa","Espaço","Uma distração"],
+      correct:0
+    },
+    {
+      q:"Qual presente ela provavelmente gostaria mais?",
+      a:["Chocolate","Perfume","Algo personalizado","Uma experiência"],
+      correct:2
+    },
+    {
+      q:"Qual programa vocês fariam juntos?",
+      a:["Viajar","Cozinhar","Assistir filme","Sair para comer"],
+      correct:0
+    },
+    {
+      q:"Qual característica mais combina com ela?",
+      a:["Carinhosa","Engraçada","Ciumenta","Sincera"],
+      correct:1
+    },
+    {
+      q:"O que mais pode melhorar um dia ruim?",
+      a:["Comida","Carinho","Música","Dormir"],
+      correct:1
+    },
+    {
+      q:"Qual seria uma viagem dos sonhos?",
+      a:["Praia","Montanha","Cidade grande","Lugar tranquilo"],
+      correct:0
+    },
+    {
+      q:"O que mais importa em um relacionamento?",
+      a:["Confiança","Carinho","Diversão","Companheirismo"],
+      correct:0
+    },
+    {
+      q:"Qual dessas opções combina mais com um sábado perfeito?",
+      a:["Sair","Dormir até tarde","Viajar","Ficar juntos"],
+      correct:3
+    },
+    {
+      q:"Quando acontece uma discussão, o melhor é:",
+      a:["Conversar","Esperar passar","Fazer uma brincadeira","Mudar de assunto"],
+      correct:0
+    },
+    {
+      q:"Qual palavra melhor define vocês?",
+      a:["Amor","Parceria","Diversão","Tudo junto"],
+      correct:3
+    },
+    {
+      q:"O que vocês deveriam fazer mais juntos?",
+      a:["Conversar","Sair","Viajar","Demonstrar carinho"],
+      correct:3
+    },
+    {
+      q:"Qual seria o maior motivo para comemorar hoje?",
+      a:["O amor","A amizade","A parceria","Estar juntos"],
+      correct:3
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+  let name1 = "";
+  let name2 = "";
+  let answersPlayer1 = [];
+  let gameCode = "";
+
+  function generateGameCode(){
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for(let i=0;i<6;i++){
+      code += chars[Math.floor(Math.random()*chars.length)];
+    }
+    return code;
+  }
+
+  function startGame(){
+    name1 = document.getElementById("name1").value.trim();
+    name2 = document.getElementById("name2").value.trim();
+
+    if(!name1 || !name2){
+      alert("Digite os dois nomes para começar.");
+      return;
+    }
+
+    current = 0;
+    score = 0;
+    answersPlayer1 = [];
+    gameCode = generateGameCode();
+
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("quizScreen").classList.remove("hidden");
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    const q = questions[current];
+
+    document.getElementById("progress").textContent =
+      `Pergunta ${current + 1} de ${questions.length}`;
+
+    document.getElementById("question").textContent = q.q;
+
     const answers = document.getElementById("answers");
-    const progress = document.getElementById("progress");
+    answers.innerHTML = "";
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-      name1 = document.getElementById("name1").value.trim();
-      name2 = document.getElementById("name2").value.trim();
+    q.a.forEach((answer,index)=>{
+      const button = document.createElement("button");
+      button.className = "answer";
+      button.textContent = answer;
+      button.onclick = ()=>chooseAnswer(index);
+      answers.appendChild(button);
+    });
+  }
 
-      if (!name1 || !name2) {
-        document.getElementById("homeError").textContent =
-          "Digite os dois nomes para começar.";
+  function chooseAnswer(index){
+    const q = questions[current];
+
+    if(index === q.correct){
+      score++;
+    }
+
+    answersPlayer1.push({
+      pergunta:q.q,
+      resposta:q.a[index],
+      alternativa:index
+    });
+
+    current++;
+
+    if(current < questions.length){
+      showQuestion();
+    }else{
+      showResult();
+    }
+  }
+
+  async function saveGame(){
+    const status = document.getElementById("saveStatus");
+
+    try{
+      const data = {
+        codigo: gameCode,
+        jogador1_respostas: JSON.stringify({
+          nome:name1,
+          respostas:answersPlayer1,
+          pontuacao:score
+        }),
+        jogador2_respostas: ""
+      };
+
+      const { error } = await supabaseClient
+        .from("Partidas")
+        .insert([data]);
+
+      if(error){
+        console.error(error);
+        status.textContent =
+          "A partida foi criada na tela, mas o Supabase recusou o salvamento. Verifique as políticas/RLS.";
         return;
       }
 
-      current = 0;
-      score = 0;
-      document.getElementById("homeError").textContent = "";
+      status.textContent = "Partida salva com sucesso no Supabase! ✅";
+    }catch(error){
+      console.error(error);
+      status.textContent = "Não foi possível salvar. Confira a conexão do Supabase.";
+    }
+  }
 
-      home.classList.add("hidden");
-      result.classList.add("hidden");
-      game.classList.remove("hidden");
-      showQuestion();
-    });
+  function showResult(){
+    document.getElementById("quizScreen").classList.add("hidden");
+    document.getElementById("resultScreen").classList.remove("hidden");
 
-    function showQuestion() {
-      const item = questions[current];
-      progress.textContent = `Pergunta ${current + 1} de ${questions.length}`;
-      question.textContent = item.q;
-      answers.innerHTML = "";
+    const percentage = Math.round((score / questions.length) * 100);
 
-      item.a.forEach((answer, index) => {
-        const btn = document.createElement("button");
-        btn.textContent = answer;
-        btn.addEventListener("click", () => chooseAnswer(index));
-        answers.appendChild(btn);
-      });
+    document.getElementById("score").textContent = percentage + "%";
+    document.getElementById("gameCode").textContent = gameCode;
+
+    let message = "";
+
+    if(percentage >= 80){
+      message = "Uau! Vocês se conhecem muito bem! ❤️🔥";
+    }else if(percentage >= 60){
+      message = "Mandaram bem! Tem bastante sintonia aí! 🥰";
+    }else{
+      message = "Ainda dá para descobrir muita coisa um sobre o outro! 😄";
     }
 
-    function chooseAnswer(index) {
-      if (index === questions[current].correct) score++;
+    document.getElementById("message").textContent = message;
 
-      current++;
+    saveGame();
+  }
 
-      if (current < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
-    }
+  function shareWhatsApp(){
+    const percentage = Math.round((score / questions.length) * 100);
 
-    function showResult() {
-      game.classList.add("hidden");
-      result.classList.remove("hidden");
+    const text =
+      `❤️ Nós Dois ❤️\n\n` +
+      `${name1} fez o quiz sobre ${name2}!\n` +
+      `Acertou ${percentage}% das perguntas.\n\n` +
+      `Código da partida: ${gameCode}\n\n` +
+      `Agora é sua vez! 😍`;
 
-      const percentage = Math.round((score / questions.length) * 100);
-      document.getElementById("resultText").textContent =
-        `${name1} e ${name2}, vocês fizeram ${score} de ${questions.length} pontos.`;
+    const url = "https://wa.me/?text=" + encodeURIComponent(text);
 
-      document.getElementById("score").textContent = `${percentage}%`;
-
-      let message = "Ainda dá para descobrir muita coisa um sobre o outro! 😄";
-      if (percentage >= 80) {
-        message = "Uau! Vocês se conhecem muito bem! ❤️🔥";
-      } else if (percentage >= 60) {
-        message = "Mandaram bem! Tem bastante sintonia aí! 🥰";
-      }
-
-      document.getElementById("message").textContent = message;
-    }
-
-    document.getElementById("againBtn").addEventListener("click", () => {
-      result.classList.add("hidden");
-      home.classList.remove("hidden");
-    });
-
-    document.getElementById("shareBtn").addEventListener("click", () => {
-      const percentage = Math.round((score / questions.length) * 100);
-      const text =
-        `❤️ Nós Dois ❤️\n${name1} e ${name2} fizeram ${percentage}% no desafio!\nSerá que você consegue superar?`;
-
-      const url = "https://wa.me/?text=" + encodeURIComponent(text);
-      window.open(url, "_blank");
-    });
-  </script>
+    window.open(url,"_blank");
+  }
+</script>
 </body>
 </html>
